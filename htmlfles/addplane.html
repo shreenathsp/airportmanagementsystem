@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Plane</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Add Plane</h2>
+    <form id="planeForm">
+        <!-- Plane Details -->
+        <div class="form-group">
+            <label>Manufacturer Name:</label>
+            <input type="text" class="form-control" id="manufacturerName" required>
+        </div>
+        <div class="form-group">
+            <label>Registration No:</label>
+            <input type="text" class="form-control" id="registrationNo" required>
+        </div>
+        <div class="form-group">
+            <label>Model No:</label>
+            <input type="text" class="form-control" id="modelNo" required>
+        </div>
+        <div class="form-group">
+            <label>Plane Name:</label>
+            <input type="text" class="form-control" id="planeName" required>
+        </div>
+        <div class="form-group">
+            <label>Capacity:</label>
+            <input type="number" class="form-control" id="capacity" required>
+        </div>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" class="form-control" id="email" required>
+        </div>
+
+        <!-- Owner Details -->
+        <div class="form-group">
+            <label>House No:</label>
+            <input type="text" class="form-control" id="houseNo" required>
+        </div>
+        <div class="form-group">
+            <label>Address Line1:</label>
+            <input type="text" class="form-control" id="addressLine1" required>
+        </div>
+        <div class="form-group">
+            <label>City:</label>
+            <input type="text" class="form-control" id="city" required>
+        </div>
+        <div class="form-group">
+            <label>State:</label>
+            <input type="text" class="form-control" id="state" required>
+        </div>
+        <div class="form-group">
+            <label>Country:</label>
+            <input type="text" class="form-control" id="country" required>
+        </div>
+        <div class="form-group">
+            <label>Pin No:</label>
+            <input type="text" class="form-control" id="pinNo" required>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="addPlane()">Add Plane</button>
+        <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset</button>
+    </form>
+</div>
+
+<script>
+    function addPlane() {
+        // Fetching values from the form
+        let manufacturerName = $("#manufacturerName").val();
+        let registrationNo = $("#registrationNo").val();
+        let modelNo = $("#modelNo").val();
+        let planeName = $("#planeName").val();
+        let capacity = $("#capacity").val();
+        let email = $("#email").val();
+        let houseNo = $("#houseNo").val();
+        let addressLine1 = $("#addressLine1").val();
+        let city = $("#city").val();
+        let state = $("#state").val();
+        let country = $("#country").val();
+        let pinNo = $("#pinNo").val();
+
+        let planeData = {
+            manufacturerName: manufacturerName,
+            registrationNo: registrationNo,
+            modelNo: modelNo,
+            planeName: planeName,
+            capacity: capacity,
+            email: email,
+            houseNo: houseNo,
+            addressLine1: addressLine1,
+            city: city,
+            state: state,
+            country: country,
+            pinNo: pinNo
+        };
+
+        fetch("/api/planes/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(planeData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("Plane added successfully with ID: " + data.id);
+            resetForm();
+        })
+        .catch(error => {
+            alert("Error: " + error.message);
+        });
+    }
+
+    function resetForm() {
+        document.getElementById("planeForm").reset();
+    }
+</script>
+
+</body>
+</html>

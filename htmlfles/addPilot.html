@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Pilot</title>
+</head>
+<body>
+
+<h2>Add Pilot</h2>
+
+<form id="addPilotForm">
+    Pilot Name: <input type="text" id="pilotName" required><br><br>
+    License No: <input type="text" id="licenseNo" required><br><br>
+    Social Security No: <input type="text" id="ssn" required><br><br>
+    Date of Birth: <input type="date" id="dob" required><br><br>
+    Gender: <select id="gender" required>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+    </select><br><br>
+    Mobile No: <input type="text" id="mobileNo" required><br><br>
+    Email Address: <input type="email" id="email" required><br><br>
+    House No: <input type="text" id="houseNo" required><br><br>
+    Address Line1: <input type="text" id="addressLine1" required><br><br>
+    City: <input type="text" id="city" required><br><br>
+    State: <input type="text" id="state" required><br><br>
+    Country: <input type="text" id="country" required><br><br>
+    Pin No: <input type="text" id="pinNo" required><br><br>
+    <input type="button" value="Add Pilot" onclick="addPilot()">
+    <input type="reset" value="Reset">
+</form>
+
+<script>
+    function addPilot() {
+        let pilot = {
+            pilotName: document.getElementById("pilotName").value,
+            licenseNo: document.getElementById("licenseNo").value,
+            ssn: document.getElementById("ssn").value,
+            dob: document.getElementById("dob").value,
+            gender: document.getElementById("gender").value,
+            mobileNo: document.getElementById("mobileNo").value,
+            email: document.getElementById("email").value,
+            houseNo: document.getElementById("houseNo").value,
+            addressLine1: document.getElementById("addressLine1").value,
+            city: document.getElementById("city").value,
+            state: document.getElementById("state").value,
+            country: document.getElementById("country").value,
+            pinNo: document.getElementById("pinNo").value
+        };
+
+        if (!validateInput(pilot)) {
+            alert("Invalid input");
+            return;
+        }
+
+        fetch('/api/pilots/add1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(pilot)
+        })
+        .then(response => response.text())
+        .then(data => {
+            alert(data);
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+    }
+
+    function validateInput(pilot) {
+        let isValid = true;
+        if (!/^[a-zA-Z\s]+$/.test(pilot.pilotName)) isValid = false;
+        if (!/^\d{10}$/.test(pilot.licenseNo)) isValid = false;
+        if (!/^\d{9}$/.test(pilot.ssn)) isValid = false;
+        let dob = new Date(pilot.dob);
+        if (isNaN(dob)) isValid = false;
+        if (!/^\d{10}$/.test(pilot.mobileNo)) isValid = false;
+        if (!/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(pilot.email)) isValid = false;
+        if (!/^[a-zA-Z0-9\s]+$/.test(pilot.houseNo)) isValid = false;
+        if (!/^[a-zA-Z\s]+$/.test(pilot.city)) isValid = false;
+        if (!/^[a-zA-Z\s]+$/.test(pilot.state)) isValid = false;
+        if (!/^[a-zA-Z\s]+$/.test(pilot.country)) isValid = false;
+        if (!/^\d{7}$/.test(pilot.pinNo)) isValid = false;
+        return isValid;
+    }
+</script>
+
+</body>
+</html>

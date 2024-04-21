@@ -1,0 +1,106 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Hanger</title>
+</head>
+<body>
+
+<h1>Add Hanger</h1>
+
+<form id="hangerForm" action="/api/hangers/add" method="post">
+    <label>Hanger Location: </label>
+    <input type="text" name="hangerLocation" required pattern="^[a-zA-Z ]+$"><br>
+
+    <label>Hanger Capacity: </label>
+    <input type="number" name="hangerCapacity" required><br>
+
+    <label>Manager Name: </label>
+    <input type="text" name="managerName" required><br>
+
+    <label>Social Security No: </label>
+    <input type="text" name="socialSecurityNo" required pattern="^\\d{9}$"><br>
+
+    <label>Date of Birth: </label>
+    <input type="date" name="dob" required><br>
+
+    <label>Gender: </label>
+    <select name="gender" required>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+    </select><br>
+
+    <label>Mobile No: </label>
+    <input type="text" name="mobileNo" required pattern="^\\d{10}$"><br>
+
+    <label>Email Address: </label>
+    <input type="email" name="emailAddress" required><br>
+
+    <label>House No: </label>
+    <input type="text" name="houseNo" required><br>
+
+    <label>Address Line1: </label>
+    <input type="text" name="addressLine1" required><br>
+
+    <label>City: </label>
+    <input type="text" name="city" required pattern="^[a-zA-Z ]+$"><br>
+
+    <label>State: </label>
+    <input type="text" name="state" required pattern="^[a-zA-Z ]+$"><br>
+
+    <label>Country: </label>
+    <input type="text" name="country" required pattern="^[a-zA-Z ]+$"><br>
+
+    <label>Pin No: </label>
+    <input type="text" name="pinNo" required pattern="^\\d{7}$"><br>
+
+    <button type="submit">Add Hanger</button>
+    <button type="reset">Reset</button>
+</form>
+
+<div id="message">${message}</div>
+<div id="error">${error}</div>
+
+<script>
+    document.getElementById('hangerForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            hangerLocation: document.getElementsByName('hangerLocation')[0].value,
+            hangerCapacity: parseInt(document.getElementsByName('hangerCapacity')[0].value),
+            managerName: document.getElementsByName('managerName')[0].value,
+            socialSecurityNo: document.getElementsByName('socialSecurityNo')[0].value,
+            dob: document.getElementsByName('dob')[0].value,
+            gender: document.getElementsByName('gender')[0].value,
+            mobileNo: document.getElementsByName('mobileNo')[0].value,
+            emailAddress: document.getElementsByName('emailAddress')[0].value,
+            houseNo: document.getElementsByName('houseNo')[0].value,
+            addressLine1: document.getElementsByName('addressLine1')[0].value,
+            city: document.getElementsByName('city')[0].value,
+            state: document.getElementsByName('state')[0].value,
+            country: document.getElementsByName('country')[0].value,
+            pinNo: document.getElementsByName('pinNo')[0].value
+        };
+
+        fetch('/api/hangers/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('message').innerText = "Hanger added successfully " + data.hangerNo;
+            document.getElementById('error').innerText = '';
+        })
+        .catch(error => {
+            document.getElementById('error').innerText = "Error: " + error.error;
+            document.getElementById('message').innerText = '';
+        });
+    });
+</script>
+
+</body>
+</html>
